@@ -7,6 +7,7 @@ import org.cryptacular.util.CertUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.ByteArrayInputStream;
@@ -25,6 +26,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class EntryConsumer {
+
+  @Value("${tld-filter}")
+  private String tldFilter;
 
   private static final Logger logger = LoggerFactory.getLogger(EntryConsumer.class);
   private final BlockingQueue<Entry> queue;
@@ -82,8 +86,12 @@ public class EntryConsumer {
   
   public void save(Entry entry, Certificate certificate) {
     try {
-      appender.append(certificate, entry.getInterval().getList(), entry.getIndex());
-      logger.debug("appended cert with index {}", entry.getIndex());
+      if (certificate.getTlds().contains(tldFilter) || tldFilter.isBlank()){
+        appender.append(certificate, entry.getInterval().getList(), entry.getIndex());
+        logger.debug("appended cert with index {}", entry.getIndex());
+      } else {
+        logger.debug("did not match tld-filter:'{}' . not appended", tldFilter);
+      }
     } catch (SQLException e) {
       logger.atError()
           .setMessage("SQLException while saving cert {} from {}")
