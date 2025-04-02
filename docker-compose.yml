@@ -10,8 +10,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-#      - ./pgconf/custom_pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-#      - ./pgconf/custom_postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ./pgconf/custom_pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - ./pgconf/custom_postgresql.conf:/var/lib/postgresql/data/postgresql.conf
 
 
   cert_axe:
