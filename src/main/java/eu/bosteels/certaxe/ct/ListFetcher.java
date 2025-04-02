@@ -1,6 +1,7 @@
 package eu.bosteels.certaxe.ct;
 
 import eu.bosteels.certaxe.observability.ProgressDatabase;
+import eu.bosteels.certaxe.observability.ProgressPostgresDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

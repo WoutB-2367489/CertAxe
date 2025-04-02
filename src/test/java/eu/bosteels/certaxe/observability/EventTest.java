@@ -24,7 +24,7 @@ class EventTest {
 
   @Test
   public void eventLogger() {
-    ProgressDatabase db = new ProgressDatabase();
+    ProgressPostgresDatabase db = new ProgressPostgresDatabase();
     EventLogger eventLogger = new EventLogger(db);
     LogList list = new LogList("my-friend", "http://some-url/");
     String url = list.getBaseURL();

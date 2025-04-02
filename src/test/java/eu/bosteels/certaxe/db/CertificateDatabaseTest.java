@@ -2,7 +2,7 @@ package eu.bosteels.certaxe.db;
 
 import eu.bosteels.certaxe.certificates.Certificate;
 import eu.bosteels.certaxe.ct.LogList;
-import eu.bosteels.certaxe.observability.ProgressDatabase;
+import eu.bosteels.certaxe.observability.ProgressPostgresDatabase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +21,13 @@ class CertificateDatabaseTest {
 
   @Test
   public void init() throws SQLException {
-    CertificateDatabase db = new CertificateDatabase(new ProgressDatabase());
+    CertificatePostgresDatabase db = new CertificatePostgresDatabase(new ProgressPostgresDatabase());
     //assertThat(db.countRows()).isEqualTo(0);
   }
 
   @Test
   public void insert() throws SQLException, CertificateException, IOException {
-    CertificateDatabase db = new CertificateDatabase(new ProgressDatabase());
+    CertificatePostgresDatabase db = new CertificatePostgresDatabase(new ProgressPostgresDatabase());
     X509Certificate cert = readTestCertificate("blackanddecker.be.pem");
     Certificate certificate = Certificate.from(cert);
     logger.info("info = {}", certificate.prettyString());

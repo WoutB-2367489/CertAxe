@@ -15,7 +15,7 @@ class ProgressDatabaseTest {
 
   @Test
   public void getNextIndex() {
-    ProgressDatabase db = new ProgressDatabase();
+    ProgressPostgresDatabase db = new ProgressPostgresDatabase();
     LogList list = new LogList("my-friend", "http://some-url/");
     String url = list.getBaseURL();
 

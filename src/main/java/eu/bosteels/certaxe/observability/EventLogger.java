@@ -22,7 +22,7 @@ public class EventLogger {
 
   private final ProgressDatabase progressDatabase;
 
-  public EventLogger(ProgressDatabase progressDatabase) {
+  public EventLogger(ProgressPostgresDatabase progressDatabase) {
     this.progressDatabase = progressDatabase;
   }
 
