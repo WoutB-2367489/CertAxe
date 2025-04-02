@@ -3,6 +3,7 @@ package eu.bosteels.certaxe.certificates;
 import eu.bosteels.certaxe.ct.Entry;
 import eu.bosteels.certaxe.observability.Event;
 import eu.bosteels.certaxe.observability.ProgressDatabase;
+import eu.bosteels.certaxe.observability.ProgressPostgresDatabase;
 import org.cryptacular.util.CertUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,12 +47,12 @@ public class EntryConsumer {
 
   public void start() throws InterruptedException {
     while (!stopped.get()) {
-      logger.atInfo().setMessage("Polling while queue has size {}").addArgument(queue::size).log();
+      logger.atDebug().setMessage("Polling while queue has size {}").addArgument(queue::size).log();
       Entry entry = queue.poll(500, TimeUnit.MILLISECONDS);
       if (entry == null) {
         logger.debug("No entry found in the queue, polling again ...");
       } else {
-        logger.info("Found an entry. Now queue.size: {} ", queue.size());
+        logger.debug("Found an entry. Now queue.size: {} ", queue.size());
         Instant start = Instant.now();
         Certificate certificate = extractCertificate(entry);
         if (certificate != null) {
@@ -85,10 +86,13 @@ public class EntryConsumer {
   }
   
   public void save(Entry entry, Certificate certificate) {
+
+    logger.debug("Certificate: {}, {}, {}", entry.getIndex(), certificate.getDomainNames(), certificate.getTlds());
+
     try {
       if (certificate.getTlds().contains(tldFilter) || tldFilter.isBlank()){
         appender.append(certificate, entry.getInterval().getList(), entry.getIndex());
-        logger.debug("appended cert with index {}", entry.getIndex());
+        logger.info("appended cert with index {}", entry.getIndex());
       } else {
         logger.debug("did not match tld-filter:'{}' . not appended", tldFilter);
       }

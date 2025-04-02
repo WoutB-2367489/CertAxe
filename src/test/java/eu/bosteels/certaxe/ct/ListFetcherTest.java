@@ -1,7 +1,7 @@
 package eu.bosteels.certaxe.ct;
 
 import eu.bosteels.certaxe.observability.Event;
-import eu.bosteels.certaxe.observability.ProgressDatabase;
+import eu.bosteels.certaxe.observability.ProgressPostgresDatabase;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ class ListFetcherTest {
   private static final Logger logger = LoggerFactory.getLogger(EntryFetcherTest.class);
   private final EntryFetcher fetcher = new EntryFetcher(queue);
 
-  private final ProgressDatabase progressDatabase = new ProgressDatabase();
+  private final ProgressPostgresDatabase progressDatabase = new ProgressPostgresDatabase();
   private final LogList xenon = new LogList("xenon2018", "http://ct.googleapis.com/logs/xenon2018/");
   private final ListFetcher listFetcher = new ListFetcher(fetcher, progressDatabase);
 

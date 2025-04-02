@@ -1,0 +1,35 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: cert_axe_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ctlogs
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+#      - ./pgconf/custom_pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+#      - ./pgconf/custom_postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+
+
+  cert_axe:
+    build: .
+    container_name: cert_axe
+    depends_on:
+      - postgres
+    environment:
+      TLD_FILTER: be # filter for which tld certificates are safed
+      LOG_LIST_FRIENDLY_NAME: https://ct.googleapis.com/logs/eu1/xenon2025h1
+      LOG_LIST_BASE_URL: https://ct.googleapis.com/logs/eu1/xenon2025h1/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ctlogs
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+    ports:
+      - "8080:8080"
+
+
+volumes:
+  postgres_data:
