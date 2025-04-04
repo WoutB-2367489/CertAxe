@@ -151,8 +151,7 @@ public class Certificate {
         registerableNames.add(dn.topDomainUnderRegistrySuffix().toString());
 
         // Add the top private domain, restoring the wildcard prefix if applicable
-//        topPrivateDomains.add((subjectName.startsWith("*.") ? "*." : "") + dn.topPrivateDomain().toString());
-        topPrivateDomains.add(dn.topPrivateDomain().toString());
+        topPrivateDomains.add((subjectName.startsWith("*.") ? "*." : "") + dn.topPrivateDomain().toString());
 
         var parent = dn;
         while (parent.hasParent()) {

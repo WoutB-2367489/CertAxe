@@ -3,7 +3,6 @@ package eu.bosteels.certaxe.certificates;
 import eu.bosteels.certaxe.ct.Entry;
 import eu.bosteels.certaxe.observability.Event;
 import eu.bosteels.certaxe.observability.ProgressDatabase;
-import eu.bosteels.certaxe.observability.ProgressPostgresDatabase;
 import org.cryptacular.util.CertUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +94,7 @@ public class EntryConsumer {
         appender.append(certificate, entry.getInterval().getList(), entry.getIndex());
         logger.info("appended cert with index {}", entry.getIndex());
       } else {
-        logger.debug("did not match tld-filter:'{}' . not appended", tldFilter);
+        logger.debug("did not match tld-filter:'{}': not appended", tldFilter);
       }
     } catch (SQLException e) {
       logger.atError()
@@ -149,8 +148,6 @@ public class EntryConsumer {
       logger.debug("Parsed {} bytes to obtain X509Certificate", certLength);
       int total = parsed.incrementAndGet();
       logger.debug("total = {}", total);
-
-
 
       return cert;
     } catch (Exception e) {
