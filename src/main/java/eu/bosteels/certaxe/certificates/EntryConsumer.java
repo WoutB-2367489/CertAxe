@@ -69,6 +69,7 @@ public class EntryConsumer {
     }
     try {
       X509Certificate x509Certificate = parse(entry);
+      //TODO: Add support for parsing of wildcard domains, eg: *.bosteels.eu
       if (x509Certificate != null) {
         Certificate certificate = Certificate.from(x509Certificate);
         logger.debug("certificate = {}", certificate);

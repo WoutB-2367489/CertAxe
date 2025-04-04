@@ -142,14 +142,21 @@ public class Certificate {
     Set<String> tlds = new HashSet<>();
 
     for (String subjectName : subjectNames) {
-      var dn = InternetDomainName.from(subjectName);
+      // Normalize the subject name by removing the wildcard prefix if present
+      String normalizedSubjectName = subjectName.startsWith("*.") ? subjectName.substring(2) : subjectName;
+
+      var dn = InternetDomainName.from(normalizedSubjectName);
       if (dn.hasPublicSuffix() && dn.publicSuffix() != null) {
         publicSuffixes.add(dn.publicSuffix().toString());
         registerableNames.add(dn.topDomainUnderRegistrySuffix().toString());
+
+        // Add the top private domain, restoring the wildcard prefix if applicable
+//        topPrivateDomains.add((subjectName.startsWith("*.") ? "*." : "") + dn.topPrivateDomain().toString());
         topPrivateDomains.add(dn.topPrivateDomain().toString());
+
         var parent = dn;
         while (parent.hasParent()) {
-            parent = parent.parent();
+          parent = parent.parent();
         }
         tlds.add(parent.toString());
       }
